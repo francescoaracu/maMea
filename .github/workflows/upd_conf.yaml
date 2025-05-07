@@ -1,11 +1,11 @@
 name: Update Domains
 on:
   schedule:
-    - cron: "0 */6 * * *"  # Esegui ogni 6 ore
+    - cron: "30 0/6 * * *"
   workflow_dispatch:      # Permette di avviare manualmente il workflow
   push:
     branches:    
-      - '**'         # matches every branch 
+      - '**'
       
 jobs:
   update-domains:
@@ -30,14 +30,10 @@ jobs:
         python update_domains.py
         
     - name: Commit and push changes to all branches
-      run: |
-        git config --global user.email "your-email@example.com"
-        git config --global user.name "Your Name"
-        
-        # Ottieni lista di tutti i branch remoti senza il prefisso "origin/"
+      run: |     
         git fetch --all
         BRANCHES=$(git branch -r | grep -v '\->' | sed 's/origin\///')
-    
+        
         for branch in $BRANCHES
         do
           echo "Processing branch: $branch"
