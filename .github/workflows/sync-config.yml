@@ -1,0 +1,30 @@
+name: Sync config.json
+
+on:
+  schedule:
+    - cron: '30 8 * * *'  # Every day at 08:30 UTC ≈ 10:30 Europe/Rome
+  workflow_dispatch:        # Allow manual trigger
+
+jobs:
+  sync-file:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout this repo
+        uses: actions/checkout@v3
+
+      - name: Clone source repo
+        run: |
+          git clone https://github.com/annamosene/MammaMiaMFP.git source
+
+      - name: Copy config.json to this repo
+        run: |
+          cp source/config.json ./config.json
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add config.json
+          git commit -m "Updated config.json" || echo "No changes"
+          git push
