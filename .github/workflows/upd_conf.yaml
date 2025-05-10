@@ -30,7 +30,10 @@ jobs:
         python update_domains.py
         
     - name: Commit and push changes to all branches
-      run: |     
+      run: |
+        git config --global user.email "you@example.com"
+        git config --global user.name "Your Name"
+  
         git fetch --all
         BRANCHES=$(git branch -r | grep -v '\->' | sed 's/origin\///')
         
